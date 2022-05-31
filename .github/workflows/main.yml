@@ -25,4 +25,4 @@ jobs:
         uses: bahmutov/npm-install@v1
 
       - name: Build
-        run: npm build
+        run: npm run build
