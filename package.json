@@ -1,6 +1,6 @@
 {
   "name": "@accentio/basic_api_framework",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "The framework of a basic api for microservices or rest apis",
   "author": "Accentio Studios <hellodev@accentiostudios.com>",
   "license": "ISC",
