@@ -1,10 +1,15 @@
 {
   "name": "@accentio/basic_api_framework",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "The framework of a basic api for microservices or rest apis",
-  "main": "index.js",
   "author": "Accentio Studios <hellodev@accentiostudios.com>",
   "license": "ISC",
+  "prepublish": "tsc",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc"
+  },
   "dependencies": {
     "express": "^4.17.3",
     "helmet": "^5.0.2",
