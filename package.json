@@ -1,10 +1,10 @@
 {
   "name": "@accentio/basic_api_framework",
-  "version": "1.0.1",
+  "version": "1.0.3",
   "description": "The framework of a basic api for microservices or rest apis",
   "author": "Accentio Studios <hellodev@accentiostudios.com>",
   "license": "ISC",
-  "prepublish": "tsc",
+  "prepare": "tsc",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
@@ -20,7 +20,7 @@
     "@types/node": "^17.0.21",
     "ts-node": "^10.7.0",
     "tslib": "^2.3.1",
-    "typescript": "^4.6.2"
+    "typescript": "^4.7.2"
   },
   "engines": {
     "node": ">=10"
