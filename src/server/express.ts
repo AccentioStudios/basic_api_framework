@@ -27,7 +27,7 @@ export class ExpressApp {
 
   registerCoreMiddlewares(): Promise<void> {
     return new Promise(async (resolve, reject) => {
-      const middlewaresFiles = await getFilesFolder(path.resolve(process.cwd(), './lib/core/middlewares'), 'ts', ['index']);
+      const middlewaresFiles = await getFilesFolder(path.resolve(process.cwd(), './src/core/middlewares'), 'ts', ['index']);
       console.log('🐵 - Registering middlewares...');
       console.log();
       await middlewaresFiles.forEach(async (middlewaresFile) => {
