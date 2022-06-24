@@ -12,11 +12,30 @@ async function boot() {
   await expressApp.init();
   await expressApp.initMiddlewares();
   await expressApp.registerRouter(await expressApp.routesToExpressRouter(routes!));
-  await SwaggerIntegration.register(expressApp, routes!);
+
+  const swaggerIntegration = new SwaggerIntegration(swaggerDocs);
+  swaggerIntegration.register(expressApp, routes!);
+
   // await database.init();
-
-
   await expressApp.maintenanceMode(false);
+}
+
+let swaggerDocs: any = {
+  openapi: '3.0.0',
+  info: {
+    title: 'Demo Basic Api Framework',
+    version: '1.0.0',
+    description: 'My Api Description',
+    contact: {
+      name: 'Accentio Studios',
+    },
+    servers: [
+      {
+        url: 'http://localhost:5000',
+        description: 'Local Server'
+      }
+    ]
+  }
 }
 
 boot();

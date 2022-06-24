@@ -1,27 +1,13 @@
 import { Route } from '../../classes';
 import SwaggerUIMiddleware from './swaggerui.middleware';
 
-let swaggerDocs: any = {
-    openapi: '3.0.0',
-    info: {
-        title: 'My Api',
-        version: '1.0.0',
-        description: 'My Api Description',
-        contact: {
-            name: 'Accentio Studios',
-        },
-        servers: [
-            {
-                url: 'http://localhost:5000',
-                description: 'Local Server'
-            }
-        ]
+export class SwaggerIntegration {
+    swaggerDocs: any;
+    constructor(swaggerDocs: any) {
+        this.swaggerDocs = swaggerDocs;
     }
-}
 
-export abstract class SwaggerIntegration {
-
-    static async register(expressApp: any, routes: Route[]) {
+    async register(expressApp: any, routes: Route[]) {
         try {
             const middleware = new SwaggerUIMiddleware(await this.generateOpenApi3(routes));
 
@@ -33,14 +19,14 @@ export abstract class SwaggerIntegration {
         }
     }
 
-    static async generateOpenApi3(routes: Route[]) {
+    async generateOpenApi3(routes: Route[]): Promise<any> {
         let apis: any = {
             paths: {}
         };
 
         for (const route of routes) {
             if (route && route.path && route.method) {
-                apis.paths[route.path] = {
+                apis.paths[`${route.controllerInfo?.info.path}${route.path}`] = {
                     [route.method]: {
                         summary: route.description,
                         responses: {
@@ -52,7 +38,7 @@ export abstract class SwaggerIntegration {
                 }
             }
         }
-        swaggerDocs['paths'] = apis.paths
-        return swaggerDocs;
+        this.swaggerDocs['paths'] = apis.paths
+        return this.swaggerDocs;
     }
 }
