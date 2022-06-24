@@ -107,9 +107,10 @@ var Route = /** @class */ (function () {
 exports.Route = Route;
 // Middleware Class
 var Middleware = /** @class */ (function () {
-    function Middleware(funcs, path) {
+    function Middleware(funcs, callback, path) {
         this.path = null;
         this.funcs = funcs;
+        this.callback = callback;
         this.path = path;
     }
     Middleware.fromFileGetted = function (file) {

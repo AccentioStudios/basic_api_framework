@@ -17,13 +17,14 @@ export declare abstract class Router {
 export declare abstract class Route {
     path: string;
     version: string;
-    handle: Controller;
-    constructor(path: string, version: string, handle: Controller);
+    handle: string;
+    constructor(path: string, version: string, handle: string);
 }
 export declare abstract class Middleware {
-    funcs: expressMiddlewareRequestAndResponseType[];
+    funcs: express.RequestHandler[];
+    callback?: express.RequestHandler[];
     path: string | null;
-    constructor(funcs: expressMiddlewareRequestAndResponseType[], path: string);
+    constructor(funcs: express.RequestHandler[], callback: express.RequestHandler[], path: string);
     static fromFileGetted(file: FileGettedFromFolder): Middleware | null;
 }
 export declare class FileGettedFromFolder {

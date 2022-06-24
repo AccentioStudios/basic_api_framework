@@ -42,7 +42,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ExpressApp = void 0;
 var express = require("express");
 var classes_1 = require("../classes");
-var getFilesFolder_1 = require("../utils/getFilesFolder");
+var getModulesFromFolder_1 = require("../utils/getModulesFromFolder");
 var path = require("path");
 var helmet_1 = __importDefault(require("helmet"));
 var bodyParser = require("body-parser");
@@ -65,49 +65,120 @@ var ExpressApp = /** @class */ (function () {
             });
         });
     };
-    ExpressApp.prototype.registerCoreMiddlewares = function () {
+    ExpressApp.prototype.addMiddlewaresToExpress = function (middlewaresFiles) {
         var _this = this;
         return new Promise(function (resolve, reject) { return __awaiter(_this, void 0, void 0, function () {
-            var middlewaresFiles;
+            var error_1;
             var _this = this;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, (0, getFilesFolder_1.getFilesFolder)(path.resolve(process.cwd(), './src/core/middlewares'), 'ts', ['index'])];
-                    case 1:
-                        middlewaresFiles = _a.sent();
-                        console.log('🐵 - Registering middlewares...');
-                        console.log();
+                    case 0:
+                        _a.trys.push([0, 4, , 5]);
+                        if (!(middlewaresFiles.length > 0 && middlewaresFiles != null)) return [3 /*break*/, 2];
                         return [4 /*yield*/, middlewaresFiles.forEach(function (middlewaresFile) { return __awaiter(_this, void 0, void 0, function () {
-                                var middleware, _a, _b, _c, _d, _e;
-                                return __generator(this, function (_f) {
-                                    switch (_f.label) {
+                                var middleware, _a, _b, _c, _d, _e, _f, _g, _h;
+                                return __generator(this, function (_j) {
+                                    switch (_j.label) {
                                         case 0:
                                             middleware = classes_1.Middleware.fromFileGetted(middlewaresFile);
-                                            if (!middleware) return [3 /*break*/, 4];
-                                            if (!(middleware.path !== null && middleware.path !== '' && middleware.path !== undefined)) return [3 /*break*/, 2];
+                                            if (!(middleware != null)) return [3 /*break*/, 9];
+                                            if (!(middleware.path !== null && middleware.path !== '' && middleware.path !== undefined)) return [3 /*break*/, 6];
+                                            if (!(middleware.callback != null && middleware.callback != undefined)) return [3 /*break*/, 3];
                                             _b = (_a = this.app).use;
                                             _c = [middleware.path];
                                             return [4 /*yield*/, middleware.funcs];
                                         case 1:
-                                            _b.apply(_a, _c.concat([_f.sent()]));
-                                            return [3 /*break*/, 4];
+                                            _c = _c.concat([_j.sent()]);
+                                            return [4 /*yield*/, middleware.callback];
                                         case 2:
-                                            _e = (_d = this.app).use;
-                                            return [4 /*yield*/, middleware.funcs];
+                                            _b.apply(_a, _c.concat([_j.sent()]));
+                                            return [3 /*break*/, 5];
                                         case 3:
-                                            _e.apply(_d, [_f.sent()]);
-                                            _f.label = 4;
-                                        case 4: return [2 /*return*/];
+                                            _e = (_d = this.app).use;
+                                            _f = [middleware.path];
+                                            return [4 /*yield*/, middleware.funcs];
+                                        case 4:
+                                            _e.apply(_d, _f.concat([_j.sent()]));
+                                            _j.label = 5;
+                                        case 5:
+                                            resolve();
+                                            return [3 /*break*/, 8];
+                                        case 6:
+                                            _h = (_g = this.app).use;
+                                            return [4 /*yield*/, middleware.funcs];
+                                        case 7:
+                                            _h.apply(_g, [_j.sent()]);
+                                            resolve();
+                                            _j.label = 8;
+                                        case 8: return [3 /*break*/, 10];
+                                        case 9:
+                                            resolve();
+                                            _j.label = 10;
+                                        case 10: return [2 /*return*/];
                                     }
                                 });
                             }); })];
-                    case 2:
+                    case 1:
                         _a.sent();
+                        return [3 /*break*/, 3];
+                    case 2:
                         resolve();
-                        return [2 /*return*/];
+                        _a.label = 3;
+                    case 3: return [3 /*break*/, 5];
+                    case 4:
+                        error_1 = _a.sent();
+                        reject(error_1);
+                        return [3 /*break*/, 5];
+                    case 5: return [2 /*return*/];
                 }
             });
         }); });
+    };
+    ExpressApp.prototype.registerInternalMiddlewares = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var coreMiddlewaresFiles, error_2;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, (0, getModulesFromFolder_1.getModulesFromFolder)(path.resolve(__dirname, '../middlewares'), 'ts', ['index'])];
+                    case 1:
+                        coreMiddlewaresFiles = _a.sent();
+                        return [2 /*return*/, this.addMiddlewaresToExpress(coreMiddlewaresFiles)];
+                    case 2:
+                        error_2 = _a.sent();
+                        console.error('Error trying to register core middlewares');
+                        throw (error_2);
+                    case 3: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    ExpressApp.prototype.registerMiddlewares = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var middlewaresFiles, error_3;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 3, , 4]);
+                        return [4 /*yield*/, this.registerInternalMiddlewares()];
+                    case 1:
+                        _a.sent();
+                        console.log('🐵 - Registering middlewares...');
+                        console.log();
+                        return [4 /*yield*/, (0, getModulesFromFolder_1.getModulesFromFolder)(path.resolve(process.cwd(), './src/core/middlewares'), 'ts', ['index'])];
+                    case 2:
+                        middlewaresFiles = _a.sent();
+                        return [2 /*return*/, this.addMiddlewaresToExpress(middlewaresFiles)];
+                    case 3:
+                        error_3 = _a.sent();
+                        console.error('☹ - Error Registering middlewares', error_3);
+                        process.exit(1);
+                        return [3 /*break*/, 4];
+                    case 4: return [2 /*return*/];
+                }
+            });
+        });
     };
     ExpressApp.prototype.registerRouter = function (expressRouter) {
         var _this = this;

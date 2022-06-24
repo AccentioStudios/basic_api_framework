@@ -1,4 +1,7 @@
 import express = require('express');
+import path = require('path');
+import { cwd } from 'process';
+import { readFile } from './utils/getAsset';
 export type ExpressRouter = express.Router;
 export type expressRequestAndResponseType =
     (req: express.Request, res: express.Response) => void;
@@ -7,73 +10,49 @@ export type expressMiddlewareRequestAndResponseType =
 // Controller Class
 
 export abstract class Controller {
-    getMethods: expressRequestAndResponseType[];
-    postMethods: expressRequestAndResponseType[];
-    constructor(getMethods: expressRequestAndResponseType[], postMethods: expressRequestAndResponseType[]) {
-        this.getMethods = getMethods;
-        this.postMethods = postMethods;
+    methods: expressRequestAndResponseType[];
+    constructor(methods: expressRequestAndResponseType[]) {
+        this.methods = methods;
     }
+
 }
 
 // Router Classes
+export abstract class Route {
+    method?: string;
+    path?: string;
+    description?: string;
+    controllerInfo?: ControllerInfo;
 
-export type RouterSettings = {
-    routes: Route[],
-};
-export abstract class Router {
-    settings: RouterSettings | null = null;
-
-    toExpressRouter(): Promise<ExpressRouter | null> {
-        return new Promise(async (resolve) => {
-            if (this.settings != null) {
-                var expressRouter: ExpressRouter = express.Router();
-                await this.settings.routes.forEach(async (route) => {
-                    let baseRouterUrl = `/${route.path}/${route.version}`;
-                    await Object.keys(route.handle.getMethods).forEach((key, index) => {
-                        const getMethod: expressRequestAndResponseType = route.handle.getMethods[index];
-                        const endpointName: string = `${baseRouterUrl}/${getMethod.name}`;
-                        expressRouter.get(endpointName, (req, res) => getMethod(req, res));
-                    });
-                    await Object.keys(route.handle.postMethods).forEach((key, index) => {
-                        const postMethod = route.handle.postMethods[index];
-                        const endpointName: string = `${baseRouterUrl}/${postMethod.name}`;
-                        expressRouter.post(endpointName, (req, res) => postMethod(req, res));
-                    });
-                });
-                return resolve(expressRouter);
-            }
-            return resolve(null);
-        });
+    constructor(path?: string, method?: string, controllerInfo?: ControllerInfo, description?: string,) {
+        this.path = path;
+        this.method = method;
+        this.controllerInfo = controllerInfo;
+        this.description = description;
     }
 }
 
-export abstract class Route {
-    path: string;
-    version: string;
-    handle: Controller;
-
-    constructor(path: string, version: string, handle: Controller) {
-        this.path = path;
-        this.version = version;
-        this.handle = handle
-    }
-
+export type ControllerInfo = {
+    controller?: Controller;
+    info?: any;
 }
 
 // Middleware Class
 
 export abstract class Middleware {
-    funcs: expressMiddlewareRequestAndResponseType[];
+    funcs: express.RequestHandler[];
+    callback?: express.RequestHandler[];
     path: string | null = null;
-    constructor(funcs: expressMiddlewareRequestAndResponseType[], path: string) {
+    constructor(funcs: express.RequestHandler[], callback: express.RequestHandler[], path: string) {
         this.funcs = funcs;
+        this.callback = callback;
         this.path = path;
     }
 
     static fromFileGetted(file: FileGettedFromFolder): Middleware | null {
         if (file == null) return null;
-        if (!file.content.default.hasOwnProperty('funcs')) return null;
-        return file.content.default as Middleware;
+        if (!file.module.default.hasOwnProperty('funcs')) return null;
+        return file.module.default as Middleware;
     }
 }
 
@@ -81,10 +60,14 @@ export abstract class Middleware {
 
 export class FileGettedFromFolder {
     name: string;
-    content: any;
+    content: string;
+    module: any;
+    path?: string;
 
-    constructor(name: string, content: any) {
+    constructor(name: string, content: string, module: any, path?: string) {
         this.name = name;
         this.content = content;
+        this.module = module;
+        this.path = path;
     }
 }
