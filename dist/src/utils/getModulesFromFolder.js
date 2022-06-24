@@ -66,10 +66,76 @@ var __asyncValues = (this && this.__asyncValues) || function (o) {
     function settle(resolve, reject, d, v) { Promise.resolve(v).then(function(v) { resolve({ value: v, done: d }); }, reject); }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getModulesFromFolder = void 0;
+exports.getModulesFromFolder = exports.getModulesGlob = void 0;
 var fs = require("fs");
 var path = require("path");
 var classes_1 = require("../classes");
+var getAsset_1 = require("./getAsset");
+var glob_1 = require("glob");
+/**
+  * Read all modules files in the same directory
+  * @param {string} dir      directory to search
+  * @param {G.IOptions} options Options of glob package
+  */
+function getModulesGlob(dir, options) {
+    return __awaiter(this, void 0, void 0, function () {
+        var _this = this;
+        return __generator(this, function (_a) {
+            return [2 /*return*/, new Promise(function (resolve, reject) {
+                    (0, glob_1.glob)(dir, options, function (err, files) { var files_1, files_1_1; return __awaiter(_this, void 0, void 0, function () {
+                        var objects, pathFile, content, _module, object, e_1_1;
+                        var e_1, _a;
+                        return __generator(this, function (_b) {
+                            switch (_b.label) {
+                                case 0:
+                                    objects = [];
+                                    _b.label = 1;
+                                case 1:
+                                    _b.trys.push([1, 8, 9, 14]);
+                                    files_1 = __asyncValues(files);
+                                    _b.label = 2;
+                                case 2: return [4 /*yield*/, files_1.next()];
+                                case 3:
+                                    if (!(files_1_1 = _b.sent(), !files_1_1.done)) return [3 /*break*/, 7];
+                                    pathFile = files_1_1.value;
+                                    return [4 /*yield*/, (0, getAsset_1.readFile)(pathFile)];
+                                case 4:
+                                    content = _b.sent();
+                                    return [4 /*yield*/, Promise.resolve().then(function () { return __importStar(require(pathFile)); })];
+                                case 5:
+                                    _module = _b.sent();
+                                    object = new classes_1.FileGettedFromFolder(path.parse(pathFile).name, content, _module, pathFile);
+                                    objects.push(object);
+                                    _b.label = 6;
+                                case 6: return [3 /*break*/, 2];
+                                case 7: return [3 /*break*/, 14];
+                                case 8:
+                                    e_1_1 = _b.sent();
+                                    e_1 = { error: e_1_1 };
+                                    return [3 /*break*/, 14];
+                                case 9:
+                                    _b.trys.push([9, , 12, 13]);
+                                    if (!(files_1_1 && !files_1_1.done && (_a = files_1.return))) return [3 /*break*/, 11];
+                                    return [4 /*yield*/, _a.call(files_1)];
+                                case 10:
+                                    _b.sent();
+                                    _b.label = 11;
+                                case 11: return [3 /*break*/, 13];
+                                case 12:
+                                    if (e_1) throw e_1.error;
+                                    return [7 /*endfinally*/];
+                                case 13: return [7 /*endfinally*/];
+                                case 14:
+                                    resolve(objects);
+                                    return [2 /*return*/];
+                            }
+                        });
+                    }); });
+                })];
+        });
+    });
+}
+exports.getModulesGlob = getModulesGlob;
 /**
   * Read all modules files in the same directory
   * @param {string} dir      directory to search
@@ -77,9 +143,9 @@ var classes_1 = require("../classes");
   * @param {string[]} ignore   List of files to ignore
   */
 function getModulesFromFolder(dir, ext, ignore) {
-    var e_1, _a;
+    var e_2, _a;
     return __awaiter(this, void 0, void 0, function () {
-        var objects, files, filterFiles, filterFiles_1, filterFiles_1_1, file, _module, object, e_1_1;
+        var objects, files, filterFiles, filterFiles_1, filterFiles_1_1, file, pathFile, content, _module, object, e_2_1;
         return __generator(this, function (_b) {
             switch (_b.label) {
                 case 0:
@@ -97,50 +163,43 @@ function getModulesFromFolder(dir, ext, ignore) {
                     });
                     _b.label = 2;
                 case 2:
-                    _b.trys.push([2, 8, 9, 14]);
+                    _b.trys.push([2, 9, 10, 15]);
                     filterFiles_1 = __asyncValues(filterFiles);
                     _b.label = 3;
                 case 3: return [4 /*yield*/, filterFiles_1.next()];
                 case 4:
-                    if (!(filterFiles_1_1 = _b.sent(), !filterFiles_1_1.done)) return [3 /*break*/, 7];
+                    if (!(filterFiles_1_1 = _b.sent(), !filterFiles_1_1.done)) return [3 /*break*/, 8];
                     file = filterFiles_1_1.value;
-                    if (!(path.extname(file) === ".".concat(ext))) return [3 /*break*/, 6];
-                    return [4 /*yield*/, Promise.resolve().then(function () { return __importStar(require(path.join(dir, file))); })];
+                    if (!(path.extname(file) === ".".concat(ext))) return [3 /*break*/, 7];
+                    pathFile = path.join(dir, file);
+                    return [4 /*yield*/, (0, getAsset_1.readFile)(pathFile)];
                 case 5:
+                    content = _b.sent();
+                    return [4 /*yield*/, Promise.resolve().then(function () { return __importStar(require(pathFile)); })];
+                case 6:
                     _module = _b.sent();
-                    object = new classes_1.FileGettedFromFolder(path.parse(file).name, _module);
+                    object = new classes_1.FileGettedFromFolder(path.parse(file).name, content, _module, pathFile);
                     objects.push(object);
-                    _b.label = 6;
-                case 6: return [3 /*break*/, 3];
-                case 7: return [3 /*break*/, 14];
-                case 8:
-                    e_1_1 = _b.sent();
-                    e_1 = { error: e_1_1 };
-                    return [3 /*break*/, 14];
+                    _b.label = 7;
+                case 7: return [3 /*break*/, 3];
+                case 8: return [3 /*break*/, 15];
                 case 9:
-                    _b.trys.push([9, , 12, 13]);
-                    if (!(filterFiles_1_1 && !filterFiles_1_1.done && (_a = filterFiles_1.return))) return [3 /*break*/, 11];
-                    return [4 /*yield*/, _a.call(filterFiles_1)];
+                    e_2_1 = _b.sent();
+                    e_2 = { error: e_2_1 };
+                    return [3 /*break*/, 15];
                 case 10:
+                    _b.trys.push([10, , 13, 14]);
+                    if (!(filterFiles_1_1 && !filterFiles_1_1.done && (_a = filterFiles_1.return))) return [3 /*break*/, 12];
+                    return [4 /*yield*/, _a.call(filterFiles_1)];
+                case 11:
                     _b.sent();
-                    _b.label = 11;
-                case 11: return [3 /*break*/, 13];
-                case 12:
-                    if (e_1) throw e_1.error;
+                    _b.label = 12;
+                case 12: return [3 /*break*/, 14];
+                case 13:
+                    if (e_2) throw e_2.error;
                     return [7 /*endfinally*/];
-                case 13: return [7 /*endfinally*/];
-                case 14: 
-                // await files.forEach(async (file) => {
-                //     await ignore.forEach((ignoreItem) => {
-                //         if (file.includes(ignoreItem)) { return; }
-                //     });
-                //     if (path.extname(file) === `.${ext}`) {
-                //         const _module = await import(path.join(dir, file));
-                //         const object = new FileGettedFromFolder(path.parse(file).name, _module);
-                //         objects.push(object);
-                //     }
-                // });
-                return [2 /*return*/, objects];
+                case 14: return [7 /*endfinally*/];
+                case 15: return [2 /*return*/, objects];
             }
         });
     });

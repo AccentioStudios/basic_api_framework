@@ -24,15 +24,21 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var swaggerUi = __importStar(require("swagger-ui-express"));
-var swagger_1 = require("../core_integrations/swagger/swagger");
+;
 var SwaggerUIMiddleware = /** @class */ (function () {
-    function SwaggerUIMiddleware() {
+    function SwaggerUIMiddleware(swaggerDocs) {
+        var _this = this;
+        this.swaggerDocs = {};
         this.path = '/swagger';
         this.funcs = swaggerUi.serve;
         this.callback = [
-            swaggerUi.setup(swagger_1.swaggerOptions)
+            function (res, req, next) {
+                var swaggerUiSetup = swaggerUi.setup(_this.swaggerDocs);
+                return swaggerUiSetup(res, req, next);
+            }
         ];
+        this.swaggerDocs = swaggerDocs;
     }
     return SwaggerUIMiddleware;
 }());
-exports.default = new SwaggerUIMiddleware();
+exports.default = SwaggerUIMiddleware;
