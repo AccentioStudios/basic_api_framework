@@ -1,22 +1,34 @@
-import { Controller, expressRequestAndResponseType } from "@accentio/basic_api_framework/dist/classes";
+import { Controller, expressRequestAndResponseType } from "@accentio/basic_api_framework/src/classes";
 import UserEntity, { userEntityToDto } from "../../user/models/user.model";
 import bcrypt = require('bcrypt');
 
+/**
+ * @api /auth
+ * @name Authentication
+ */
 class AuthController implements Controller {
-    getMethods: expressRequestAndResponseType[] = [
-    ];
-    postMethods: expressRequestAndResponseType[] = [
+    methods: expressRequestAndResponseType[] = [
+
+        /**
+        * @get /v1/login
+        * @description Authentication Login
+        */
         function login(req, res) {
             res.send('hello world');
         },
+
+        /**
+        * @post /v1/register
+        * @description Authentication Register
+        */
         async function register(req, res) {
-            const newUser = new UserEntity({
-                name: req.body.name,
-                username: req.body.username,
-                email: req.body.email,
-                password: await bcryptPassword(req.body.password),
-            });
             try {
+                const newUser = new UserEntity({
+                    name: req.body.name,
+                    username: req.body.username,
+                    email: req.body.email,
+                    password: await bcryptPassword(req.body.password),
+                });
                 const savedUser: UserEntity = await newUser.save();
                 res.status(201).json(userEntityToDto(savedUser));
             } catch (err) {

@@ -1,8 +1,8 @@
-import { Controller, expressRequestAndResponseType } from "@accentio/basic_api_framework/dist/classes";
+import { Controller, expressRequestAndResponseType } from "@accentio/basic_api_framework/src/classes";
 import UserEntity, { userEntityToDto } from "../models/user.model";
 
 class UserController implements Controller {
-    getMethods: expressRequestAndResponseType[] = [
+    methods: expressRequestAndResponseType[] = [
         function world(req, res) {
             res.send('hello world');
         },
@@ -12,7 +12,6 @@ class UserController implements Controller {
             res.send(JSON.stringify(userDto));
         }
     ];
-    postMethods: expressRequestAndResponseType[] = [];
 
 }
 
