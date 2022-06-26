@@ -12,3 +12,6 @@
 config.gypi
 CVS
 npm-debug.log
+.env
+demo/
+src/**/*

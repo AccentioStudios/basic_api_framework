@@ -1,9 +1,9 @@
-import express = require('express');
+import { RequestHandler } from 'express';
 import { Middleware } from "@accentio/basic_api_framework/src/classes";
 
 class TestMiddleware implements Middleware {
     path = null;
-    funcs: express.RequestHandler[] = [
+    funcs: RequestHandler[] = [
         (req, res, next) => {
             if (!req.app.get('testMessage')) {
                 return next();

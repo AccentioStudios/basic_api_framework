@@ -4,7 +4,8 @@
   "description": "The scaffold of a basic api for microservices or rest apis",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon --exec 'ts-node index.ts",
+    "build": "tsc",
+    "dev": "ts-node ./index.ts",
     "start": "ts-node index.ts"
   },
   "author": "Accentio Studios <hellodev@accentiostudios.com>",

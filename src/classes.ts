@@ -1,7 +1,4 @@
-import express = require('express');
-import path = require('path');
-import { cwd } from 'process';
-import { readFile } from './utils/getAsset';
+import express from 'express';
 export type ExpressRouter = express.Router;
 export type expressRequestAndResponseType =
     (req: express.Request, res: express.Response) => void;

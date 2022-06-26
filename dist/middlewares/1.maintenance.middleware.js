@@ -1,13 +1,9 @@
-import { RequestHandler } from 'express';
-import { Middleware } from "../classes";
 import { getAsset } from "../utils/getAsset";
-
 const fs = require('fs');
 const path = require('path');
-
-class MaintenanceMiddleware implements Middleware {
+class MaintenanceMiddleware {
     path = null;
-    funcs: RequestHandler[] = [
+    funcs = [
         (req, res, next) => {
             if (!req.app.get('maintenance')) {
                 return next();
@@ -20,5 +16,4 @@ class MaintenanceMiddleware implements Middleware {
         }
     ];
 }
-
 export default new MaintenanceMiddleware();

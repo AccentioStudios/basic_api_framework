@@ -1,17 +1,22 @@
   {
     "compilerOptions": {
-      "target": "es5",
-      "module": "commonjs",
-      "lib": ["es2017", "es7", "es6", "dom"],
-      "declaration": true,
-      "outDir": "dist",
+      "target": "ESNEXT",
+      "module": "ESNext",
+      "lib": ["ES2020"],
+      "outDir": "./dist",
+      "rootDir": "./src",    
       "strict": true,
-      "esModuleInterop": true
+      "moduleResolution": "node",
+      "allowSyntheticDefaultImports": true,
+      "esModuleInterop": true,
+      "forceConsistentCasingInFileNames": true,
+      "declaration": true,
+      "declarationMap": true
     },
+    "include": ["src/**/*"],
     "exclude": [
       "node_modules",
-      "dist",
-      "demo"
+      "./demo"
     ]
   }
 

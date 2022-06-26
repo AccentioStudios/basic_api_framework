@@ -1,4 +1,4 @@
-import express = require('express');
+import express from 'express';
 import { Middleware } from "../../classes";
 import * as swaggerUi from 'swagger-ui-express';;
 

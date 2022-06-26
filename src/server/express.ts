@@ -1,22 +1,18 @@
-import express = require('express');
+import express, { Application } from 'express';
 import { Controller, ControllerInfo, expressRequestAndResponseType, ExpressRouter, FileGettedFromFolder, Middleware, Route } from '../classes';
-import { getModulesFromFolder, getModulesGlob } from '../utils/getModulesFromFolder';
-import path = require('path');
+import { getModulesGlob } from '../utils/getModulesFromFolder';
 import helmet from 'helmet';
-import bodyParser = require('body-parser');
+import * as bodyParser from 'body-parser';
 import * as doctrine from 'doctrine';
-import { extractYamlFromJsDoc } from '../utils/extractYamlFromJsDoc';
-import YAML from 'yaml'
 import { extractRouteFromJsDoc } from '../utils/extractRouteFromJsDoc';
-import { SwaggerIntegration } from '../core_integrations/swagger/swagger';
 
 export class ExpressApp {
-  app: express.Express;
+  app: Application;
   constructor() {
     this.app = express();
   }
 
-  init(): Promise<express.Express> {
+  init(): Promise<Application> {
     return new Promise((resolve, reject) => {
       this.maintenanceMode();
       this.app.use(helmet());
