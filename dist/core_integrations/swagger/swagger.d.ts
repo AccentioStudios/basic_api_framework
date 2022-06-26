@@ -5,4 +5,3 @@ export declare class SwaggerIntegration {
     register(expressApp: any, routes: Route[]): Promise<void>;
     generateOpenApi3(routes: Route[]): Promise<any>;
 }
-//# sourceMappingURL=swagger.d.ts.map

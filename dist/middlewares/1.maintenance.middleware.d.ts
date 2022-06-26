@@ -6,4 +6,3 @@ declare class MaintenanceMiddleware implements Middleware {
 }
 declare const _default: MaintenanceMiddleware;
 export default _default;
-//# sourceMappingURL=1.maintenance.middleware.d.ts.map

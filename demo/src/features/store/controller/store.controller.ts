@@ -1,4 +1,4 @@
-import { Controller, expressRequestAndResponseType } from "@accentio/basic_api_framework/src/classes";
+import { Controller, expressRequestAndResponseType } from "@accentio/basic_api_framework/src";
 
 class StoreController implements Controller {
     methods: expressRequestAndResponseType[] = [

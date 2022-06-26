@@ -1,4 +1,19 @@
-  {
+// {
+//   "compilerOptions": {
+//     "target": "ESNext",
+//     "module": "ESNext",
+//     "lib": ["ES2020"],
+//     "esModuleInterop": true,
+//     "outDir": "./dist",
+//     "rootDir": "./src",   
+//   },
+//   "exclude": [
+//       "node_modules",
+//       "./demo"
+//     ]
+// }
+
+{
     "compilerOptions": {
       "target": "ESNEXT",
       "module": "ESNext",
@@ -11,7 +26,6 @@
       "esModuleInterop": true,
       "forceConsistentCasingInFileNames": true,
       "declaration": true,
-      "declarationMap": true
     },
     "include": ["src/**/*"],
     "exclude": [

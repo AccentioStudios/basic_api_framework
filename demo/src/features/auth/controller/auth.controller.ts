@@ -1,6 +1,6 @@
-import { Controller, expressRequestAndResponseType } from "@accentio/basic_api_framework/src/classes";
+import { Controller, expressRequestAndResponseType } from "@accentio/basic_api_framework/src";
 import UserEntity, { userEntityToDto } from "../../user/models/user.model";
-import bcrypt = require('bcrypt');
+import bcrypt from 'bcrypt';
 
 /**
  * @api /auth

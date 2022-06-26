@@ -13,4 +13,3 @@ export declare function getModulesGlob(dir: string, options: IOptions): Promise<
   * @param {string[]} ignore   List of files to ignore
   */
 export declare function getModulesFromFolder(dir: string, ext: string, ignore: string[]): Promise<FileGettedFromFolder[]>;
-//# sourceMappingURL=getModulesFromFolder.d.ts.map

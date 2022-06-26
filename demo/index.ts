@@ -1,4 +1,5 @@
-import dotenv = require('dotenv');
-dotenv.config();
+// import 'dotenv/config'
 
-require('./src/core/boot');
+import boot from "./src/core/boot";
+
+boot();

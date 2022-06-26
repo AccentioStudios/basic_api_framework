@@ -2,7 +2,7 @@
   "name": "accentio_basic_api_scaffold",
   "version": "1.0.0",
   "description": "The scaffold of a basic api for microservices or rest apis",
-  "main": "index.js",
+  "main": "index.ts",
   "scripts": {
     "build": "tsc",
     "dev": "ts-node ./index.ts",

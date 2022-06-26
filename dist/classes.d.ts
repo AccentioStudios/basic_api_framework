@@ -31,4 +31,3 @@ export declare class FileGettedFromFolder {
     path?: string;
     constructor(name: string, content: string, module: any, path?: string);
 }
-//# sourceMappingURL=classes.d.ts.map

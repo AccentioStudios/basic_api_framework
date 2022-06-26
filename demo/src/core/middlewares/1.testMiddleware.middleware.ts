@@ -1,5 +1,5 @@
 import { RequestHandler } from 'express';
-import { Middleware } from "@accentio/basic_api_framework/src/classes";
+import { Middleware } from "@accentio/basic_api_framework/src";
 
 class TestMiddleware implements Middleware {
     path = null;

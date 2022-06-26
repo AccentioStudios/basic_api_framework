@@ -1,12 +1,12 @@
 
-import { ExpressApp } from "@accentio/basic_api_framework/src/server/express";
-import { SwaggerIntegration } from "@accentio/basic_api_framework/src/core_integrations/swagger/swagger";
+import { ExpressApp } from "@accentio/basic_api_framework/src";
+import { SwaggerIntegration } from "@accentio/basic_api_framework/src";
 import { Database } from "../integrations/database";
 
 const expressApp = new ExpressApp();
 const database = new Database();
 
-async function boot() {
+export default async function boot() {
   const routes = await expressApp.generateExpressRoutes();
 
   await expressApp.init();
@@ -38,4 +38,4 @@ let swaggerDocs: any = {
   }
 }
 
-boot();
+// boot();

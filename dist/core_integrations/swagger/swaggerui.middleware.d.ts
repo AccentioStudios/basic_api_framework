@@ -8,4 +8,3 @@ declare class SwaggerUIMiddleware implements Middleware {
     callback: express.RequestHandler[];
 }
 export default SwaggerUIMiddleware;
-//# sourceMappingURL=swaggerui.middleware.d.ts.map

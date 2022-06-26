@@ -12,4 +12,3 @@ export declare class ExpressApp {
     generateExpressRoutes(): Promise<Route[] | null>;
     routesToExpressRouter(routes: Route[]): Promise<ExpressRouter | null>;
 }
-//# sourceMappingURL=express.d.ts.map

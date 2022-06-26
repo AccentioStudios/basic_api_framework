@@ -4,4 +4,3 @@
  * @returns {array} YAML parts
  */
 export declare function extractYamlFromJsDoc(jsDocComment: any): any[];
-//# sourceMappingURL=extractYamlFromJsDoc.d.ts.map

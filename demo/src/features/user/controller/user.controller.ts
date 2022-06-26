@@ -1,4 +1,4 @@
-import { Controller, expressRequestAndResponseType } from "@accentio/basic_api_framework/src/classes";
+import { Controller, expressRequestAndResponseType } from "@accentio/basic_api_framework/src";
 import UserEntity, { userEntityToDto } from "../models/user.model";
 
 class UserController implements Controller {

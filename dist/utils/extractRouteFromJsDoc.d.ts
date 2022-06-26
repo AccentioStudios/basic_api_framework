@@ -6,4 +6,3 @@ import { Route } from '../classes';
  * @returns {array} Parts
  */
 export declare function extractRouteFromJsDoc(jsDocComment: doctrine.Annotation): Route | null;
-//# sourceMappingURL=extractRouteFromJsDoc.d.ts.map
