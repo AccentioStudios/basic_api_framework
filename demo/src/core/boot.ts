@@ -7,11 +7,10 @@ const expressApp = new ExpressApp();
 const database = new Database();
 
 export default async function boot() {
-  const routes = await expressApp.generateExpressRoutes();
 
   await expressApp.init();
   await expressApp.initMiddlewares();
-  await expressApp.registerRouter(await expressApp.routesToExpressRouter(routes!));
+  const routes = await expressApp.generateAndRegisterRoutes();
 
   const swaggerIntegration = new SwaggerIntegration(swaggerDocs);
   swaggerIntegration.register(expressApp, routes!);

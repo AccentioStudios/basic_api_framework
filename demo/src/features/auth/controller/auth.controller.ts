@@ -4,7 +4,7 @@ import bcrypt from 'bcrypt';
 
 /**
  * @api /auth
- * @name Authentication
+ * @description Auth Controller kek
  */
 class AuthController implements Controller {
     methods: expressRequestAndResponseType[] = [
