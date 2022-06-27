@@ -12,7 +12,7 @@ import { glob, IOptions } from 'glob';
   */
 export async function getModulesGlob(dir: string, options: IOptions): Promise<FileGettedFromFolder[]> {
     return new Promise((resolve, reject) => {
-        glob(dir, options, async (err, files) => {
+        glob(dir, options, async (err: any, files: any) => {
             let objects: FileGettedFromFolder[] = [];
             for await (const pathFile of files) {
                 const content = await readFile(pathFile);
@@ -36,9 +36,9 @@ export async function getModulesFromFolder(dir: string, ext: string, ignore: str
     let objects: FileGettedFromFolder[] = [];
 
     const files = (await fs.promises.readdir(dir, { withFileTypes: true }))
-        .filter(dirent => dirent.isFile()).map(dirent => dirent.name);
+        .filter((dirent: { isFile: () => any; }) => dirent.isFile()).map((dirent: { name: any; }) => dirent.name);
 
-    const filterFiles = files.filter(function (value, index, arr) {
+    const filterFiles = files.filter(function (value: any, index: number, arr: any[]) {
         if (!ignore.map(function (ignoreValue) {
             return `${ignoreValue}.${ext}`;
         }).includes(value)) {

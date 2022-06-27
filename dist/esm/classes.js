@@ -1,16 +1,11 @@
 // Controller Class
 export class Controller {
-    methods;
     constructor(methods) {
         this.methods = methods;
     }
 }
 // Router Classes
 export class Route {
-    method;
-    path;
-    description;
-    controllerInfo;
     constructor(path, method, controllerInfo, description) {
         this.path = path;
         this.method = method;
@@ -20,10 +15,8 @@ export class Route {
 }
 // Middleware Class
 export class Middleware {
-    funcs;
-    callback;
-    path = null;
     constructor(funcs, callback, path) {
+        this.path = null;
         this.funcs = funcs;
         this.callback = callback;
         this.path = path;
@@ -38,10 +31,6 @@ export class Middleware {
 }
 // File Readed
 export class FileGettedFromFolder {
-    name;
-    content;
-    module;
-    path;
     constructor(name, content, module, path) {
         this.name = name;
         this.content = content;

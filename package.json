@@ -1,14 +1,16 @@
 {
   "name": "@accentio/basic_api_framework",
-  "version": "2.0.5",
-  "description": "The framework of a basic api for microservices or rest apis",
+  "version": "2.0.6",
+  "description": "A basic api for microservices or rest apis",
   "author": "Accentio Studios <hellodev@accentiostudios.com>",
-  "license": "ISC",
-  "prepare": "tsc",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "./dist/cjs/index.js",
+  "module": "./dist/esm/index.js",
+  "files": [
+    "dist/"
+  ],
   "scripts": {
-    "build": "tsc"
+    "tsc": "tsc -p tsconfig.json && tsc -p tsconfig-cjs.json",
+    "prepublish": "npm run tsc"
   },
   "dependencies": {
     "@types/doctrine": "^0.0.5",
@@ -32,15 +34,18 @@
     "tslib": "^2.3.1",
     "typescript": "^4.7.2"
   },
-  "engines": {
-    "node": ">=12"
-  },
-  "files": [
-    "dist",
-    "src"
-  ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/AccentioStudios/basic_api_framework.git"
-  }
+    "url": "git+https://github.com/AccentioStudios/basic_api_framework.git"
+  },
+  "keywords": [
+    "accentio",
+    "framework",
+    "express"
+  ],
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AccentioStudios/basic_api_framework/issues"
+  },
+  "homepage": "https://github.com/AccentioStudios/basic_api_framework#readme"
 }

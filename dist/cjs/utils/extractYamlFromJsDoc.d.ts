@@ -3,4 +3,6 @@
  * @param {object} jsDocComment - Single item of JSDoc comments from doctrine.parse
  * @returns {array} YAML parts
  */
-export declare function extractYamlFromJsDoc(jsDocComment: any): any[];
+export declare function extractYamlFromJsDoc(jsDocComment: any): {
+    [x: number]: any;
+}[];

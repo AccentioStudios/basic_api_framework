@@ -10,9 +10,9 @@ export function extractYamlFromJsDoc(jsDocComment: any) {
 
     for (const tag of jsDocComment.tags) {
         if (tag.title === 'api' || tag.title === 'post' || tag.title === 'get' || tag.title === 'delete' || tag.title === 'patch') {
-            const item: any = {};
-            item[tag.title] = YAML.parse(tag.description)
-            yamlParts.push(item);
+            yamlParts.push({
+                [tag.title]: YAML.parse(tag.description)
+            });
         }
     }
 

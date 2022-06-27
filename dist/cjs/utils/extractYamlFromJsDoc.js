@@ -14,9 +14,9 @@ function extractYamlFromJsDoc(jsDocComment) {
     const yamlParts = [];
     for (const tag of jsDocComment.tags) {
         if (tag.title === 'api' || tag.title === 'post' || tag.title === 'get' || tag.title === 'delete' || tag.title === 'patch') {
-            const item = {};
-            item[tag.title] = yaml_1.default.parse(tag.description);
-            yamlParts.push(item);
+            yamlParts.push({
+                [tag.title]: yaml_1.default.parse(tag.description)
+            });
         }
     }
     return yamlParts;
