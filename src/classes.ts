@@ -31,7 +31,11 @@ export abstract class Route {
 
 export type ControllerInfo = {
     controller?: Controller;
-    info?: any;
+    info?: ControllerInfoInfo;
+}
+export type ControllerInfoInfo = {
+    path: string, // route path
+    description?: string // controller desc
 }
 
 // Middleware Class

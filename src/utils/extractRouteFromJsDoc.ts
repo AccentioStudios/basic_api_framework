@@ -15,8 +15,8 @@ export function extractRouteFromJsDoc(jsDocComment: doctrine.Annotation): Route 
 
         route = {
             method: jsDocComment.tags[0].title,
-            path: jsDocComment.tags[0].description || '',
-            description: jsDocComment.tags[1].description || ''
+            path: jsDocComment.tags[0]?.description || '',
+            description: jsDocComment.tags[1]?.description || ''
         };
 
         return route;

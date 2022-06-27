@@ -21,14 +21,26 @@ export class SwaggerIntegration {
     }
 
     async generateOpenApi3(routes: Route[]): Promise<any> {
-        let apis: any = {
-            paths: {}
+        let apis: SwaggerDoc = {
+            tags: [],
+            paths: {},
         };
 
         for (const route of routes) {
             if (route && route.path && route.method) {
-                apis.paths[`${route.controllerInfo?.info.path}${route.path}`] = {
+                if (!apis.tags.find(x => x.name === route.controllerInfo?.info?.path)) {
+                    apis.tags.push(
+                        {
+                            name: route.controllerInfo?.info?.path || '',
+                            description: route.controllerInfo?.info?.description || '',
+                        });
+                }
+
+                apis.paths[`${route.controllerInfo?.info?.path}${route.path}`] = {
                     [route.method]: {
+                        tags: [
+                            route.controllerInfo?.info?.path || ''
+                        ],
                         summary: route.description,
                         responses: {
                             200: {
@@ -39,7 +51,18 @@ export class SwaggerIntegration {
                 }
             }
         }
-        this.swaggerDocs['paths'] = apis.paths
+        this.swaggerDocs['tags'] = apis.tags;
+        this.swaggerDocs['paths'] = apis.paths;
         return this.swaggerDocs;
     }
+}
+
+type SwaggerDoc = {
+    tags: SwaggerDocTags[],
+    paths: any
+}
+
+type SwaggerDocTags = {
+    name: string,
+    description: string,
 }

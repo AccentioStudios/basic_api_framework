@@ -100,23 +100,26 @@ export class ExpressApp {
     this.app.set('maintenance', active);
   }
 
-  generateExpressRoutes(): Promise<Route[] | null> {
+  generateAndRegisterRoutes(): Promise<Route[]> {
     return new Promise(async (resolve) => {
       const controllersFiles: FileGettedFromFolder[] = await getModulesGlob('./src/features/**/controller/**.controller.ts', { realpath: true });
+      var expressRouter: ExpressRouter = express.Router();
+      const allRoutes: Route[] = [];
       for await (const controllerFile of controllersFiles) {
+        const controllerRoutes: Route[] = [];
         const _module = controllerFile.module.default as Controller;
         const jsDocRegex = /\/\*\*([\s\S]*?)\*\//gm;
         const jsdoc = controllerFile.content.match(jsDocRegex) || [];
         let controllerInfo: ControllerInfo = {};
-        const routes: Route[] = [];
         for await (const annotation of jsdoc) {
           let jsDocComment = doctrine.parse(annotation, { unwrap: true });
-
-          if (jsDocComment.tags[0].title === 'api') {
+          if (jsDocComment.tags.find(x => x.title == 'api')) {
             controllerInfo = {
               info: {
-                path: jsDocComment.tags[0].description, // route path
-                description: jsDocComment.tags[1].name // path name
+                path:
+                  jsDocComment.tags.find(x => x.title === 'api')!.description!, // route path
+                description:
+                  jsDocComment.tags.find(x => x.title === 'description')?.description || '', // path desc
               },
               controller: _module
             };
@@ -125,29 +128,28 @@ export class ExpressApp {
           const route = extractRouteFromJsDoc(jsDocComment);
           if (route) {
             route.controllerInfo = controllerInfo;
-            routes.push(route);
+            controllerRoutes.push(route);
+            allRoutes.push(route);
           }
-
         }
-        resolve(routes);
+        await this.registerRoutesOfController(controllerRoutes, expressRouter);
       }
-      return resolve(null);
+      await this.registerRouter(expressRouter);
+      resolve(allRoutes);
     });
   }
 
-  routesToExpressRouter(routes: Route[]): Promise<ExpressRouter | null> {
+  registerRoutesOfController(routesOfController: Route[], expressRouter: ExpressRouter): Promise<void> {
     return new Promise(async (resolve, reject) => {
-      var expressRouter: ExpressRouter = express.Router();
-
-      await Object.keys(routes).forEach((key, index) => {
-        const route: Route = routes[index];
+      await Object.keys(routesOfController).forEach((key, index) => {
+        const route: Route = routesOfController[index];
         if (route && route.controllerInfo && route.controllerInfo.controller) {
           const handler: expressRequestAndResponseType = route?.controllerInfo?.controller?.methods[index];
-          if (route.method === 'get') expressRouter.get(`${route?.controllerInfo?.info.path}${route.path}`, (req, res) => handler(req, res));
-          if (route.method === 'post') expressRouter.post(`${route?.controllerInfo?.info.path}${route.path}`, (req, res) => handler(req, res));
+          if (route.method === 'get') expressRouter.get(`${route?.controllerInfo?.info?.path}${route.path}`, (req, res) => handler(req, res));
+          if (route.method === 'post') expressRouter.post(`${route?.controllerInfo?.info?.path}${route.path}`, (req, res) => handler(req, res));
         }
       });
-      resolve(expressRouter);
+      resolve();
     });
   }
 }
