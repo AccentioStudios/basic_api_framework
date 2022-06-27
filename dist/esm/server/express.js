@@ -114,27 +114,30 @@ export class ExpressApp {
     maintenanceMode(active = true) {
         this.app.set('maintenance', active);
     }
-    generateExpressRoutes() {
+    generateAndRegisterRoutes() {
         return new Promise((resolve) => __awaiter(this, void 0, void 0, function* () {
             var e_1, _a, e_2, _b;
+            var _c;
             const controllersFiles = yield getModulesGlob('./src/features/**/controller/**.controller.ts', { realpath: true });
+            var expressRouter = express.Router();
+            const allRoutes = [];
             try {
                 for (var controllersFiles_1 = __asyncValues(controllersFiles), controllersFiles_1_1; controllersFiles_1_1 = yield controllersFiles_1.next(), !controllersFiles_1_1.done;) {
                     const controllerFile = controllersFiles_1_1.value;
+                    const controllerRoutes = [];
                     const _module = controllerFile.module.default;
                     const jsDocRegex = /\/\*\*([\s\S]*?)\*\//gm;
                     const jsdoc = controllerFile.content.match(jsDocRegex) || [];
                     let controllerInfo = {};
-                    const routes = [];
                     try {
                         for (var jsdoc_1 = (e_2 = void 0, __asyncValues(jsdoc)), jsdoc_1_1; jsdoc_1_1 = yield jsdoc_1.next(), !jsdoc_1_1.done;) {
                             const annotation = jsdoc_1_1.value;
                             let jsDocComment = doctrine.parse(annotation, { unwrap: true });
-                            if (jsDocComment.tags[0].title === 'api') {
+                            if (jsDocComment.tags.find(x => x.title == 'api')) {
                                 controllerInfo = {
                                     info: {
-                                        path: jsDocComment.tags[0].description,
-                                        description: jsDocComment.tags[1].name // path name
+                                        path: jsDocComment.tags.find(x => x.title === 'api').description,
+                                        description: ((_c = jsDocComment.tags.find(x => x.title === 'description')) === null || _c === void 0 ? void 0 : _c.description) || '', // path desc
                                     },
                                     controller: _module
                                 };
@@ -143,7 +146,8 @@ export class ExpressApp {
                             const route = extractRouteFromJsDoc(jsDocComment);
                             if (route) {
                                 route.controllerInfo = controllerInfo;
-                                routes.push(route);
+                                controllerRoutes.push(route);
+                                allRoutes.push(route);
                             }
                         }
                     }
@@ -154,7 +158,7 @@ export class ExpressApp {
                         }
                         finally { if (e_2) throw e_2.error; }
                     }
-                    resolve(routes);
+                    yield this.registerRoutesOfController(controllerRoutes, expressRouter);
                 }
             }
             catch (e_1_1) { e_1 = { error: e_1_1 }; }
@@ -164,24 +168,24 @@ export class ExpressApp {
                 }
                 finally { if (e_1) throw e_1.error; }
             }
-            return resolve(null);
+            yield this.registerRouter(expressRouter);
+            resolve(allRoutes);
         }));
     }
-    routesToExpressRouter(routes) {
+    registerRoutesOfController(routesOfController, expressRouter) {
         return new Promise((resolve, reject) => __awaiter(this, void 0, void 0, function* () {
-            var expressRouter = express.Router();
-            yield Object.keys(routes).forEach((key, index) => {
-                var _a, _b, _c, _d;
-                const route = routes[index];
+            yield Object.keys(routesOfController).forEach((key, index) => {
+                var _a, _b, _c, _d, _e, _f;
+                const route = routesOfController[index];
                 if (route && route.controllerInfo && route.controllerInfo.controller) {
                     const handler = (_b = (_a = route === null || route === void 0 ? void 0 : route.controllerInfo) === null || _a === void 0 ? void 0 : _a.controller) === null || _b === void 0 ? void 0 : _b.methods[index];
                     if (route.method === 'get')
-                        expressRouter.get(`${(_c = route === null || route === void 0 ? void 0 : route.controllerInfo) === null || _c === void 0 ? void 0 : _c.info.path}${route.path}`, (req, res) => handler(req, res));
+                        expressRouter.get(`${(_d = (_c = route === null || route === void 0 ? void 0 : route.controllerInfo) === null || _c === void 0 ? void 0 : _c.info) === null || _d === void 0 ? void 0 : _d.path}${route.path}`, (req, res) => handler(req, res));
                     if (route.method === 'post')
-                        expressRouter.post(`${(_d = route === null || route === void 0 ? void 0 : route.controllerInfo) === null || _d === void 0 ? void 0 : _d.info.path}${route.path}`, (req, res) => handler(req, res));
+                        expressRouter.post(`${(_f = (_e = route === null || route === void 0 ? void 0 : route.controllerInfo) === null || _e === void 0 ? void 0 : _e.info) === null || _f === void 0 ? void 0 : _f.path}${route.path}`, (req, res) => handler(req, res));
                 }
             });
-            resolve(expressRouter);
+            resolve();
         }));
     }
 }

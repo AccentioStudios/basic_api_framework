@@ -15,7 +15,11 @@ export declare abstract class Route {
 }
 export declare type ControllerInfo = {
     controller?: Controller;
-    info?: any;
+    info?: ControllerInfoInfo;
+};
+export declare type ControllerInfoInfo = {
+    path: string;
+    description?: string;
 };
 export declare abstract class Middleware {
     funcs: express.RequestHandler[];

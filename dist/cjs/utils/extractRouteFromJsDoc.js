@@ -7,6 +7,7 @@ exports.extractRouteFromJsDoc = void 0;
  * @returns {array} Parts
  */
 function extractRouteFromJsDoc(jsDocComment) {
+    var _a, _b;
     let route;
     if (jsDocComment.tags[0].title === 'post' ||
         jsDocComment.tags[0].title === 'get' ||
@@ -14,8 +15,8 @@ function extractRouteFromJsDoc(jsDocComment) {
         jsDocComment.tags[0].title === 'patch') {
         route = {
             method: jsDocComment.tags[0].title,
-            path: jsDocComment.tags[0].description || '',
-            description: jsDocComment.tags[1].description || ''
+            path: ((_a = jsDocComment.tags[0]) === null || _a === void 0 ? void 0 : _a.description) || '',
+            description: ((_b = jsDocComment.tags[1]) === null || _b === void 0 ? void 0 : _b.description) || ''
         };
         return route;
     }

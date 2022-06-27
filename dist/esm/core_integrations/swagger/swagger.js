@@ -26,15 +26,25 @@ export class SwaggerIntegration {
         });
     }
     generateOpenApi3(routes) {
-        var _a;
+        var _a, _b, _c, _d, _e, _f, _g, _h;
         return __awaiter(this, void 0, void 0, function* () {
             let apis = {
-                paths: {}
+                tags: [],
+                paths: {},
             };
             for (const route of routes) {
                 if (route && route.path && route.method) {
-                    apis.paths[`${(_a = route.controllerInfo) === null || _a === void 0 ? void 0 : _a.info.path}${route.path}`] = {
+                    if (!apis.tags.find(x => { var _a, _b; return x.name === ((_b = (_a = route.controllerInfo) === null || _a === void 0 ? void 0 : _a.info) === null || _b === void 0 ? void 0 : _b.path); })) {
+                        apis.tags.push({
+                            name: ((_b = (_a = route.controllerInfo) === null || _a === void 0 ? void 0 : _a.info) === null || _b === void 0 ? void 0 : _b.path) || '',
+                            description: ((_d = (_c = route.controllerInfo) === null || _c === void 0 ? void 0 : _c.info) === null || _d === void 0 ? void 0 : _d.description) || '',
+                        });
+                    }
+                    apis.paths[`${(_f = (_e = route.controllerInfo) === null || _e === void 0 ? void 0 : _e.info) === null || _f === void 0 ? void 0 : _f.path}${route.path}`] = {
                         [route.method]: {
+                            tags: [
+                                ((_h = (_g = route.controllerInfo) === null || _g === void 0 ? void 0 : _g.info) === null || _h === void 0 ? void 0 : _h.path) || ''
+                            ],
                             summary: route.description,
                             responses: {
                                 200: {
@@ -45,6 +55,7 @@ export class SwaggerIntegration {
                     };
                 }
             }
+            this.swaggerDocs['tags'] = apis.tags;
             this.swaggerDocs['paths'] = apis.paths;
             return this.swaggerDocs;
         });
