@@ -16,7 +16,8 @@ export default async function boot() {
   swaggerIntegration.register(expressApp, routes!);
 
   // await database.init();
-  await expressApp.maintenanceMode(false);
+  expressApp.maintenanceMode(false);
+  expressApp.log(true);
 }
 
 let swaggerDocs: any = {
