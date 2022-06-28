@@ -99,6 +99,9 @@ export class ExpressApp {
   maintenanceMode(active: boolean = true) {
     this.app.set('maintenance', active);
   }
+  log(active: boolean = true) {
+    this.app.set('log', active);
+  }
 
   generateAndRegisterRoutes(): Promise<Route[]> {
     return new Promise(async (resolve) => {
