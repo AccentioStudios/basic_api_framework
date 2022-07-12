@@ -2,11 +2,11 @@
   "name": "accentio_basic_api_scaffold",
   "version": "1.0.0",
   "description": "The scaffold of a basic api for microservices or rest apis",
-  "main": "index.ts",
+  "main": "src/index.ts",
   "scripts": {
     "build": "tsc",
-    "dev": "ts-node ./index.ts",
-    "start": "ts-node index.ts"
+    "dev": "ts-node ./src/index.ts",
+    "start": "ts-node src/index.ts"
   },
   "author": "Accentio Studios <hellodev@accentiostudios.com>",
   "license": "ISC",
