@@ -106,7 +106,7 @@ class ExpressApp {
     registerInternalMiddlewares() {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const coreMiddlewaresFiles = yield (0, getModulesFromFolder_1.getModulesGlob)('../middlewares/**.middleware.ts', { cwd: __dirname, realpath: true });
+                const coreMiddlewaresFiles = yield (0, getModulesFromFolder_1.getModulesGlob)('../middlewares/**.middleware.+(ts|js)', { cwd: __dirname, realpath: true });
                 return this.registerMiddlewares(coreMiddlewaresFiles);
             }
             catch (error) {
@@ -142,6 +142,9 @@ class ExpressApp {
     }
     maintenanceMode(active = true) {
         this.app.set('maintenance', active);
+    }
+    log(active = true) {
+        this.app.set('log', active);
     }
     generateAndRegisterRoutes() {
         return new Promise((resolve) => __awaiter(this, void 0, void 0, function* () {

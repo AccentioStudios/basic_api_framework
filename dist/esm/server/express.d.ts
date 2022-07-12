@@ -9,6 +9,7 @@ export declare class ExpressApp {
     initMiddlewares(): Promise<void>;
     registerRouter(expressRouter: ExpressRouter | null): Promise<void>;
     maintenanceMode(active?: boolean): void;
+    log(active?: boolean): void;
     generateAndRegisterRoutes(): Promise<Route[]>;
     registerRoutesOfController(routesOfController: Route[], expressRouter: ExpressRouter): Promise<void>;
 }

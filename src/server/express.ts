@@ -61,7 +61,7 @@ export class ExpressApp {
 
   private async registerInternalMiddlewares(): Promise<void> {
     try {
-      const coreMiddlewaresFiles = await getModulesGlob('../middlewares/**.middleware.ts', { cwd: __dirname, realpath: true });
+      const coreMiddlewaresFiles = await getModulesGlob('../middlewares/**.middleware.+(ts|js)', { cwd: __dirname, realpath: true });
       return this.registerMiddlewares(coreMiddlewaresFiles);
     } catch (error: any) {
       console.error('Error trying to register core middlewares');
