@@ -74,7 +74,7 @@ export class ExpressApp {
       await this.registerInternalMiddlewares();
       console.log('🐵 - Registering middlewares...');
       console.log();
-      const middlewaresFiles = await getModulesGlob('./src/core/middlewares/**.middleware.ts', { realpath: true });
+      const middlewaresFiles = await getModulesGlob(process.cwd().replace('/', '\/') + '/core/middlewares/**.middleware.ts', { realpath: true });
 
       return this.registerMiddlewares(middlewaresFiles);
     } catch (error: any) {
@@ -105,7 +105,7 @@ export class ExpressApp {
 
   generateAndRegisterRoutes(): Promise<Route[]> {
     return new Promise(async (resolve) => {
-      const controllersFiles: FileGettedFromFolder[] = await getModulesGlob('./src/features/**/controller/**.controller.ts', { realpath: true });
+      const controllersFiles: FileGettedFromFolder[] = await getModulesGlob(process.cwd().replace('/', '\/') + '/features/**/controller/**.controller.ts', { realpath: true });
       var expressRouter: ExpressRouter = express.Router();
       const allRoutes: Route[] = [];
       for await (const controllerFile of controllersFiles) {
