@@ -1,6 +1,6 @@
 {
   "name": "@accentio/basic_api_framework",
-  "version": "2.0.6-3",
+  "version": "2.0.6",
   "description": "A basic api for microservices or rest apis",
   "author": "Accentio Studios <hellodev@accentiostudios.com>",
   "main": "./dist/cjs/index.js",
