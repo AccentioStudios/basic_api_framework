@@ -92,7 +92,9 @@ export class ExpressApp {
                 yield this.registerInternalMiddlewares();
                 console.log('🐵 - Registering middlewares...');
                 console.log();
-                const middlewaresFiles = yield getModulesGlob('./src/core/middlewares/**.middleware.ts', { realpath: true });
+                const path = 'core/middlewares/**.middleware.+(ts|js)';
+                const cwd = process.cwd().replace(/\\/g, "/");
+                const middlewaresFiles = yield getModulesGlob(path, { realpath: true, cwd: cwd });
                 return this.registerMiddlewares(middlewaresFiles);
             }
             catch (error) {
@@ -121,7 +123,9 @@ export class ExpressApp {
         return new Promise((resolve) => __awaiter(this, void 0, void 0, function* () {
             var e_1, _a, e_2, _b;
             var _c;
-            const controllersFiles = yield getModulesGlob('./src/features/**/controller/**.controller.ts', { realpath: true });
+            const path = 'features/**/controller/**.controller.+(ts|js)';
+            const cwd = process.cwd().replace(/\\/g, "/");
+            const controllersFiles = yield getModulesGlob(path, { realpath: true, cwd: cwd });
             var expressRouter = express.Router();
             const allRoutes = [];
             try {
